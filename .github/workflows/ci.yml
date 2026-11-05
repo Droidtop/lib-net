@@ -115,9 +115,54 @@ jobs:
             echo "NET_REMOTE_WEBDAV_PASSWORD=test-only-password"
             echo "NET_REMOTE_WEBDAV_REQUIRED=1"
           } >> "$GITHUB_ENV"
+      # net-remote's SFTP backend against a real OpenSSH server on 127.0.0.1:2222, with an ed25519 host key made
+      # here and a user whose password is made up here; crates/remote/tests/sftp_live.rs.
+      - name: Start an SFTP server for net-remote's tests
+        run: |
+          set -eu
+          command -v /usr/sbin/sshd >/dev/null || { sudo apt-get update -q; sudo apt-get install -y -q openssh-server; }
+          sudo useradd -m sftptest
+          echo 'sftptest:test-only-password' | sudo chpasswd
+          sudo -u sftptest mkdir -p /home/sftptest/share
+          ssh-keygen -q -t ed25519 -N '' -f "$RUNNER_TEMP/hostkey"
+          sudo install -m 600 -o root -g root "$RUNNER_TEMP/hostkey" /etc/ssh/net_remote_hostkey
+          cat > "$RUNNER_TEMP/sshd_config" <<EOF
+          Port 2222
+          ListenAddress 127.0.0.1
+          HostKey /etc/ssh/net_remote_hostkey
+          PasswordAuthentication yes
+          KbdInteractiveAuthentication no
+          UsePAM yes
+          PermitRootLogin no
+          AllowUsers sftptest
+          Subsystem sftp internal-sftp
+          PidFile $RUNNER_TEMP/sshd.pid
+          EOF
+          sudo mkdir -p /run/sshd
+          sudo /usr/sbin/sshd -t -f "$RUNNER_TEMP/sshd_config"
+          sudo /usr/sbin/sshd -f "$RUNNER_TEMP/sshd_config" -E "$RUNNER_TEMP/sshd.log"
+          for _ in $(seq 1 30); do
+            if ssh-keyscan -p 2222 127.0.0.1 >/dev/null 2>&1; then break; fi
+            sleep 1
+          done
+          ssh-keyscan -p 2222 127.0.0.1 >/dev/null
+          fingerprint="$(ssh-keygen -lf "$RUNNER_TEMP/hostkey.pub" -E sha256 | awk '{print $2}')"
+          echo "host key: $fingerprint"
+          {
+            echo "NET_REMOTE_SFTP_HOST=127.0.0.1"
+            echo "NET_REMOTE_SFTP_PORT=2222"
+            echo "NET_REMOTE_SFTP_USER=sftptest"
+            echo "NET_REMOTE_SFTP_PASSWORD=test-only-password"
+            echo "NET_REMOTE_SFTP_HOST_KEY=$fingerprint"
+            echo "NET_REMOTE_SFTP_FOLDER=share"
+            echo "NET_REMOTE_SFTP_REQUIRED=1"
+          } >> "$GITHUB_ENV"
       - name: Test
         if: success() || failure()
         run: cargo test --workspace --no-fail-fast
+      - name: The SFTP server's log, when a test failed
+        if: failure()
+        run: sudo cat "$RUNNER_TEMP/sshd.log" || true
       - name: The WebDAV server's log, when a test failed
         if: failure()
         run: cat "$RUNNER_TEMP/dav.log" || true

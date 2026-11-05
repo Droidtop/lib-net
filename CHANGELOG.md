@@ -3,6 +3,16 @@
 All notable changes to lib-net (droidtop-shared until 0.2.0). Versions follow [Semantic Versioning](https://semver.org/)
 (in 0.x, only a new minor version may break the API; CI enforces it).
 
+## [0.2.2]
+
+### Added
+- `net-remote`: SFTP (`Sftp`, `SftpConfig`; Droidtop/tracker#573). Any SSH server, signed in with the person's
+  password or an OpenSSH private key. The server's key is pinned by its SHA-256 fingerprint: without one, connecting
+  fails with `Error::HostKeyUnknown` carrying the server's fingerprint for the person to check and accept, and with a
+  different one, `Error::HostKeyChanged`. russh 0.65 and russh-sftp 3, on ring, run on a runtime of the backend's
+  own, so `Remote` stays blocking. CI tests it against a real OpenSSH server.
+- `Error::HostKeyUnknown` and `Error::HostKeyChanged` (the enum is `#[non_exhaustive]`).
+
 ## [0.2.1]
 
 ### Added

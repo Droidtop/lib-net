@@ -6,7 +6,8 @@
 //! picker, Downloads, droidtop's backups, and lib-sync's store and forward as one of its backends. A
 //! backend is one implementation of it:
 //! - [`LocalFolder`]: a folder on this computer (one the person's own sync tool carries, or a mount);
-//! - [`WebDav`]: Nextcloud, ownCloud, most NAS and any WebDAV server.
+//! - [`WebDav`]: Nextcloud, ownCloud, most NAS and any WebDAV server;
+//! - [`Sftp`]: any SSH server, with its key pinned.
 //!
 //! Paths are relative to the share's root, `/`-separated, and checked by [`RemotePath`]: no `..`, no
 //! `.`, no empty segment and no backslash, so nothing a caller builds can climb out of the share.
@@ -19,9 +20,11 @@ use std::fmt;
 use std::io::{self, Read, Write};
 
 mod local;
+mod sftp;
 mod webdav;
 
 pub use local::LocalFolder;
+pub use sftp::{Sftp, SftpConfig};
 pub use webdav::{WebDav, WebDavConfig};
 
 /// What went wrong, in words a person can read: droidtop shows these as the share's state.
@@ -43,6 +46,13 @@ pub enum Error {
     /// Plain HTTP was asked for without the person allowing it ([`WebDavConfig::allow_plain_http`]).
     #[error("the share's address is not encrypted (http); use https, or allow unencrypted for this share")]
     NotEncrypted,
+    /// The server's key is not one the person has accepted yet: its SHA-256 fingerprint, for them to check
+    /// against the server and accept ([`SftpConfig::host_key`]).
+    #[error("droidtop doesn't know this server's key yet ({0}); check it is the server's, then accept it")]
+    HostKeyUnknown(String),
+    /// The server's key is not the one the person accepted: someone may be in between.
+    #[error("the server's key has changed (it was {expected}, now {found}); check the server before accepting the new key")]
+    HostKeyChanged { expected: String, found: String },
     /// A path a caller built was not a plain path inside the share.
     #[error("{0} is not a path inside the share")]
     BadPath(String),

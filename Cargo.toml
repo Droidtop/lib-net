@@ -6,7 +6,7 @@ resolver = "2"
 members = ["crates/remote"]
 
 [workspace.package]
-version = "0.2.1"
+version = "0.2.2"
 edition = "2021"
 license = "GPL-3.0-only"
 repository = "https://github.com/Droidtop/lib-net"
@@ -23,6 +23,12 @@ percent-encoding = "2"
 httpdate = "1"
 # 0.22, not 0.23: ureq 2 already brings base64 0.22, so one copy is linked.
 base64 = "0.22"
+# SFTP (crates/remote/src/sftp.rs): russh on ring, not its default aws-lc-rs, whose C build script would be a second
+# crypto stack beside the ring every program here already links; and russh-sftp over it. Both are async on tokio,
+# run on a runtime of the backend's own so the interface stays blocking.
+russh = { version = "0.65", default-features = false, features = ["ring", "rsa"] }
+russh-sftp = "3"
+tokio = { version = "1", default-features = false, features = ["rt", "net", "time", "io-util", "sync"] }
 
 [profile.release]
 opt-level = "s"
