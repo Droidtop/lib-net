@@ -1,0 +1,193 @@
+public final class dev/droidtop/shared/report/AppIdentity {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ldev/droidtop/shared/report/AppIdentity;
+	public static synthetic fun copy$default (Ldev/droidtop/shared/report/AppIdentity;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Ldev/droidtop/shared/report/AppIdentity;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBuild ()Ljava/lang/String;
+	public final fun getComponent ()Ljava/lang/String;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getProduct ()Ljava/lang/String;
+	public final fun getVersion ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/droidtop/shared/report/BugzillaSender : dev/droidtop/shared/report/ReportSender {
+	public static final field ALIAS_TAKEN I
+	public static final field MAX_RESPONSE I
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;IIZ)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;IIZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getId ()Ljava/lang/String;
+	public fun send (Ldev/droidtop/shared/report/ComposedReport;)Ldev/droidtop/shared/report/SendOutcome;
+}
+
+public final class dev/droidtop/shared/report/ComposedReport {
+	public fun <init> (Ldev/droidtop/shared/report/AppIdentity;Ldev/droidtop/shared/report/Kind;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;)V
+	public final fun component1 ()Ldev/droidtop/shared/report/AppIdentity;
+	public final fun component2 ()Ldev/droidtop/shared/report/Kind;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Ljava/util/List;
+	public final fun copy (Ldev/droidtop/shared/report/AppIdentity;Ldev/droidtop/shared/report/Kind;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;)Ldev/droidtop/shared/report/ComposedReport;
+	public static synthetic fun copy$default (Ldev/droidtop/shared/report/ComposedReport;Ldev/droidtop/shared/report/AppIdentity;Ldev/droidtop/shared/report/Kind;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;ILjava/lang/Object;)Ldev/droidtop/shared/report/ComposedReport;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getApp ()Ldev/droidtop/shared/report/AppIdentity;
+	public final fun getBody ()Ljava/lang/String;
+	public final fun getIncludedSections ()Ljava/util/List;
+	public final fun getKind ()Ldev/droidtop/shared/report/Kind;
+	public final fun getReportId ()Ljava/lang/String;
+	public final fun getTitle ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/droidtop/shared/report/EmailSender : dev/droidtop/shared/report/ReportSender {
+	public static final field Companion Ldev/droidtop/shared/report/EmailSender$Companion;
+	public static final field MAX_BODY_IN_ADDRESS I
+	public fun <init> (Ljava/lang/String;)V
+	public fun getId ()Ljava/lang/String;
+	public fun send (Ldev/droidtop/shared/report/ComposedReport;)Ldev/droidtop/shared/report/SendOutcome;
+}
+
+public final class dev/droidtop/shared/report/EmailSender$Companion {
+}
+
+public final class dev/droidtop/shared/report/IssueFormSender : dev/droidtop/shared/report/ReportSender {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getId ()Ljava/lang/String;
+	public fun send (Ldev/droidtop/shared/report/ComposedReport;)Ldev/droidtop/shared/report/SendOutcome;
+}
+
+public final class dev/droidtop/shared/report/Kind : java/lang/Enum {
+	public static final field BUG Ldev/droidtop/shared/report/Kind;
+	public static final field CRASH Ldev/droidtop/shared/report/Kind;
+	public static final field SUGGESTION Ldev/droidtop/shared/report/Kind;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Ldev/droidtop/shared/report/Kind;
+	public static fun values ()[Ldev/droidtop/shared/report/Kind;
+}
+
+public final class dev/droidtop/shared/report/Redactor {
+	public static final field INSTANCE Ldev/droidtop/shared/report/Redactor;
+	public final fun redact (Ljava/lang/String;Ljava/util/List;Z)Ljava/lang/String;
+	public static synthetic fun redact$default (Ldev/droidtop/shared/report/Redactor;Ljava/lang/String;Ljava/util/List;ZILjava/lang/Object;)Ljava/lang/String;
+}
+
+public final class dev/droidtop/shared/report/ReportComposer {
+	public static final field INSTANCE Ldev/droidtop/shared/report/ReportComposer;
+	public static final field MAX_BODY I
+	public static final field MAX_SECTION I
+	public static final field MAX_TITLE I
+	public final fun compose (Ldev/droidtop/shared/report/ReportDraft;)Ldev/droidtop/shared/report/ComposedReport;
+}
+
+public final class dev/droidtop/shared/report/ReportDraft {
+	public fun <init> (Ldev/droidtop/shared/report/AppIdentity;Ldev/droidtop/shared/report/Kind;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/util/List;Ljava/lang/String;)V
+	public synthetic fun <init> (Ldev/droidtop/shared/report/AppIdentity;Ldev/droidtop/shared/report/Kind;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/util/List;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ldev/droidtop/shared/report/AppIdentity;
+	public final fun component2 ()Ldev/droidtop/shared/report/Kind;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/util/List;
+	public final fun component6 ()Ljava/util/List;
+	public final fun component7 ()Ljava/lang/String;
+	public final fun copy (Ldev/droidtop/shared/report/AppIdentity;Ldev/droidtop/shared/report/Kind;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/util/List;Ljava/lang/String;)Ldev/droidtop/shared/report/ReportDraft;
+	public static synthetic fun copy$default (Ldev/droidtop/shared/report/ReportDraft;Ldev/droidtop/shared/report/AppIdentity;Ldev/droidtop/shared/report/Kind;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/util/List;Ljava/lang/String;ILjava/lang/Object;)Ldev/droidtop/shared/report/ReportDraft;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getApp ()Ldev/droidtop/shared/report/AppIdentity;
+	public final fun getDetails ()Ljava/lang/String;
+	public final fun getHide ()Ljava/util/List;
+	public final fun getKind ()Ldev/droidtop/shared/report/Kind;
+	public final fun getReportId ()Ljava/lang/String;
+	public final fun getSections ()Ljava/util/List;
+	public final fun getTitle ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class dev/droidtop/shared/report/ReportSender {
+	public abstract fun getId ()Ljava/lang/String;
+	public abstract fun send (Ldev/droidtop/shared/report/ComposedReport;)Ldev/droidtop/shared/report/SendOutcome;
+}
+
+public final class dev/droidtop/shared/report/Section {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ldev/droidtop/shared/report/Source;Ljava/lang/String;Z)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ldev/droidtop/shared/report/Source;Ljava/lang/String;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ldev/droidtop/shared/report/Source;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Z
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ldev/droidtop/shared/report/Source;Ljava/lang/String;Z)Ldev/droidtop/shared/report/Section;
+	public static synthetic fun copy$default (Ldev/droidtop/shared/report/Section;Ljava/lang/String;Ljava/lang/String;Ldev/droidtop/shared/report/Source;Ljava/lang/String;ZILjava/lang/Object;)Ldev/droidtop/shared/report/Section;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getHeading ()Ljava/lang/String;
+	public final fun getId ()Ljava/lang/String;
+	public final fun getIncluded ()Z
+	public final fun getSource ()Ldev/droidtop/shared/report/Source;
+	public final fun getText ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class dev/droidtop/shared/report/SendOutcome {
+}
+
+public final class dev/droidtop/shared/report/SendOutcome$Failed : dev/droidtop/shared/report/SendOutcome {
+	public fun <init> (Ljava/lang/String;Z)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Z
+	public final fun copy (Ljava/lang/String;Z)Ldev/droidtop/shared/report/SendOutcome$Failed;
+	public static synthetic fun copy$default (Ldev/droidtop/shared/report/SendOutcome$Failed;Ljava/lang/String;ZILjava/lang/Object;)Ldev/droidtop/shared/report/SendOutcome$Failed;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getReason ()Ljava/lang/String;
+	public final fun getRetryable ()Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/droidtop/shared/report/SendOutcome$HandOff : dev/droidtop/shared/report/SendOutcome {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;)Ldev/droidtop/shared/report/SendOutcome$HandOff;
+	public static synthetic fun copy$default (Ldev/droidtop/shared/report/SendOutcome$HandOff;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Ldev/droidtop/shared/report/SendOutcome$HandOff;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getClipboard ()Ljava/lang/String;
+	public final fun getUrl ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/droidtop/shared/report/SendOutcome$Sent : dev/droidtop/shared/report/SendOutcome {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;)Ldev/droidtop/shared/report/SendOutcome$Sent;
+	public static synthetic fun copy$default (Ldev/droidtop/shared/report/SendOutcome$Sent;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Ldev/droidtop/shared/report/SendOutcome$Sent;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getReference ()Ljava/lang/String;
+	public final fun getUrl ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/droidtop/shared/report/Source : java/lang/Enum {
+	public static final field APP_LOG Ldev/droidtop/shared/report/Source;
+	public static final field CRASH_NOTE Ldev/droidtop/shared/report/Source;
+	public static final field DEVICE Ldev/droidtop/shared/report/Source;
+	public static final field SETTINGS Ldev/droidtop/shared/report/Source;
+	public static final field TYPED Ldev/droidtop/shared/report/Source;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Ldev/droidtop/shared/report/Source;
+	public static fun values ()[Ldev/droidtop/shared/report/Source;
+}
+

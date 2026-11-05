@@ -39,8 +39,20 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@ed408507eac070d1f99cc633dbcf757c94c7933a # v4
 
-      - name: Test every module
-        run: ./gradlew test --stacktrace
+      - name: Test every module, and check its public API against its dump
+        run: ./gradlew test apiCheck --stacktrace
+
+  # The public API stays compatible within a version (Droidtop/tracker#867, owner 2026-11-04: "I should be able to
+  # bump the version number and immediately get the benefit"): an API line removed since the last release fails
+  # unless lib.version is a breaking version and the CHANGELOG says what broke.
+  api-compat:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - run: scripts/check-api-compat.sh
 
   droidtop:
     uses: Droidtop/droidtop/.github/workflows/library-check.yml@main
@@ -61,7 +73,7 @@ jobs:
   # the change that needs it.
   release:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: [test, droidtop, enginehost]
+    needs: [test, api-compat, droidtop, enginehost]
     runs-on: ubuntu-24.04
     permissions:
       contents: write

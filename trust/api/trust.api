@@ -1,0 +1,191 @@
+public final class dev/droidtop/shared/trust/BundleTar {
+	public static final field INSTANCE Ldev/droidtop/shared/trust/BundleTar;
+	public final fun getPERMISSIVE_PATH_CHARS ()Lkotlin/text/Regex;
+	public final fun getSTRICT_PATH_CHARS ()Lkotlin/text/Regex;
+	public final fun read (Ljava/io/File;Ldev/droidtop/shared/trust/BundleTar$Limits;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)V
+	public static synthetic fun read$default (Ldev/droidtop/shared/trust/BundleTar;Ljava/io/File;Ldev/droidtop/shared/trust/BundleTar$Limits;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+	public final fun validatePath (Ljava/lang/String;Lkotlin/text/Regex;)Ljava/lang/String;
+	public static synthetic fun validatePath$default (Ldev/droidtop/shared/trust/BundleTar;Ljava/lang/String;Lkotlin/text/Regex;ILjava/lang/Object;)Ljava/lang/String;
+}
+
+public final class dev/droidtop/shared/trust/BundleTar$Entry {
+	public final fun getInput ()Ljava/io/InputStream;
+	public final fun getMode ()I
+	public final fun getPath ()Ljava/lang/String;
+	public final fun getSize ()J
+	public final fun readBytes (J)[B
+}
+
+public final class dev/droidtop/shared/trust/BundleTar$Limits {
+	public fun <init> ()V
+	public fun <init> (JIILkotlin/text/Regex;)V
+	public synthetic fun <init> (JIILkotlin/text/Regex;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getMaxEntries ()I
+	public final fun getMaxEntryBytes ()J
+	public final fun getPathChars ()Lkotlin/text/Regex;
+	public final fun getXzMemoryKiB ()I
+}
+
+public final class dev/droidtop/shared/trust/BundleTarException : java/io/IOException {
+	public fun <init> (Ljava/lang/String;Ljava/lang/Throwable;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+
+public final class dev/droidtop/shared/trust/ChainSignature {
+	public static final field CATALOG_URN Ljava/lang/String;
+	public static final field INSTANCE Ldev/droidtop/shared/trust/ChainSignature;
+	public static final field OID_ARC Ljava/lang/String;
+	public static final field ORIGIN_URN Ljava/lang/String;
+	public static final field PLUGIN_URN Ljava/lang/String;
+	public final fun acceptableKey (Ljava/security/PublicKey;)Z
+	public final fun claimedLeafKeySha256 (Ljava/lang/String;)Ljava/lang/String;
+	public final fun coversPlugin (Ljava/security/cert/X509Certificate;Ljava/lang/String;)Z
+	public final fun names (Ljava/security/cert/X509Certificate;Ljava/lang/String;Ljava/lang/String;)Z
+	public final fun parseCertificate (Ljava/lang/String;)Ljava/security/cert/X509Certificate;
+	public final fun parseSpki (Ljava/lang/String;)Ljava/security/PublicKey;
+	public final fun uris (Ljava/security/cert/X509Certificate;)Ljava/util/List;
+	public final fun verify (Ljava/lang/String;Ldev/droidtop/shared/trust/ChainSignature$Purpose;Ldev/droidtop/shared/trust/ChainSignature$Anchor;[BLkotlin/jvm/functions/Function1;Z)Ldev/droidtop/shared/trust/ChainSignature$Result;
+	public static synthetic fun verify$default (Ldev/droidtop/shared/trust/ChainSignature;Ljava/lang/String;Ldev/droidtop/shared/trust/ChainSignature$Purpose;Ldev/droidtop/shared/trust/ChainSignature$Anchor;[BLkotlin/jvm/functions/Function1;ZILjava/lang/Object;)Ldev/droidtop/shared/trust/ChainSignature$Result;
+	public final fun verifyChain (Ljava/util/List;Ldev/droidtop/shared/trust/ChainSignature$Purpose;Ldev/droidtop/shared/trust/ChainSignature$Anchor;Lkotlin/jvm/functions/Function1;Z)Ljava/lang/String;
+	public static synthetic fun verifyChain$default (Ldev/droidtop/shared/trust/ChainSignature;Ljava/util/List;Ldev/droidtop/shared/trust/ChainSignature$Purpose;Ldev/droidtop/shared/trust/ChainSignature$Anchor;Lkotlin/jvm/functions/Function1;ZILjava/lang/Object;)Ljava/lang/String;
+}
+
+public final class dev/droidtop/shared/trust/ChainSignature$Anchor {
+	public fun <init> (Ljava/security/PublicKey;Z)V
+	public synthetic fun <init> (Ljava/security/PublicKey;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getKey ()Ljava/security/PublicKey;
+	public final fun getPinned ()Z
+	public final fun getSha256 ()Ljava/lang/String;
+}
+
+public final class dev/droidtop/shared/trust/ChainSignature$Purpose : java/lang/Enum {
+	public static final field CATALOG Ldev/droidtop/shared/trust/ChainSignature$Purpose;
+	public static final field PLUGIN Ldev/droidtop/shared/trust/ChainSignature$Purpose;
+	public static final field REVOCATIONS Ldev/droidtop/shared/trust/ChainSignature$Purpose;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun getOid ()Ljava/lang/String;
+	public final fun getTyp ()Ljava/lang/String;
+	public static fun valueOf (Ljava/lang/String;)Ldev/droidtop/shared/trust/ChainSignature$Purpose;
+	public static fun values ()[Ldev/droidtop/shared/trust/ChainSignature$Purpose;
+}
+
+public abstract interface class dev/droidtop/shared/trust/ChainSignature$Result {
+}
+
+public final class dev/droidtop/shared/trust/ChainSignature$Result$Refused : dev/droidtop/shared/trust/ChainSignature$Result {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Ldev/droidtop/shared/trust/ChainSignature$Result$Refused;
+	public static synthetic fun copy$default (Ldev/droidtop/shared/trust/ChainSignature$Result$Refused;Ljava/lang/String;ILjava/lang/Object;)Ldev/droidtop/shared/trust/ChainSignature$Result$Refused;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getReason ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/droidtop/shared/trust/ChainSignature$Result$Verified : dev/droidtop/shared/trust/ChainSignature$Result {
+	public fun <init> (Ljava/util/List;Ldev/droidtop/shared/trust/ChainSignature$Anchor;[B)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Ldev/droidtop/shared/trust/ChainSignature$Anchor;
+	public final fun component3 ()[B
+	public final fun copy (Ljava/util/List;Ldev/droidtop/shared/trust/ChainSignature$Anchor;[B)Ldev/droidtop/shared/trust/ChainSignature$Result$Verified;
+	public static synthetic fun copy$default (Ldev/droidtop/shared/trust/ChainSignature$Result$Verified;Ljava/util/List;Ldev/droidtop/shared/trust/ChainSignature$Anchor;[BILjava/lang/Object;)Ldev/droidtop/shared/trust/ChainSignature$Result$Verified;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAnchor ()Ldev/droidtop/shared/trust/ChainSignature$Anchor;
+	public final fun getChain ()Ljava/util/List;
+	public final fun getLeaf ()Ljava/security/cert/X509Certificate;
+	public final fun getPayload ()[B
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/droidtop/shared/trust/KeyGeneration {
+	public fun <init> (Ljava/lang/String;I)V
+	public synthetic fun <init> (Ljava/lang/String;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()I
+	public final fun copy (Ljava/lang/String;I)Ldev/droidtop/shared/trust/KeyGeneration;
+	public static synthetic fun copy$default (Ldev/droidtop/shared/trust/KeyGeneration;Ljava/lang/String;IILjava/lang/Object;)Ldev/droidtop/shared/trust/KeyGeneration;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFingerprint ()Ljava/lang/String;
+	public final fun getSerial ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/droidtop/shared/trust/KeyRotation {
+	public static final field INSTANCE Ldev/droidtop/shared/trust/KeyRotation;
+	public final fun decide (Ldev/droidtop/shared/trust/KeyGeneration;Ldev/droidtop/shared/trust/KeyGeneration;)Ldev/droidtop/shared/trust/KeyRotation$Decision;
+}
+
+public final class dev/droidtop/shared/trust/KeyRotation$Decision : java/lang/Enum {
+	public static final field NEW_ORIGIN Ldev/droidtop/shared/trust/KeyRotation$Decision;
+	public static final field REFUSE Ldev/droidtop/shared/trust/KeyRotation$Decision;
+	public static final field ROTATE Ldev/droidtop/shared/trust/KeyRotation$Decision;
+	public static final field UNCHANGED Ldev/droidtop/shared/trust/KeyRotation$Decision;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Ldev/droidtop/shared/trust/KeyRotation$Decision;
+	public static fun values ()[Ldev/droidtop/shared/trust/KeyRotation$Decision;
+}
+
+public final class dev/droidtop/shared/trust/Origins {
+	public static final field INSTANCE Ldev/droidtop/shared/trust/Origins;
+	public final fun normalizeGithub (Ljava/lang/String;)Ljava/lang/String;
+}
+
+public final class dev/droidtop/shared/trust/PublishedKeys {
+	public static final field INSTANCE Ldev/droidtop/shared/trust/PublishedKeys;
+	public final fun anchorKey (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+	public final fun keyUrlsFor (Ljava/lang/String;Ljava/lang/String;)Ljava/util/List;
+	public final fun originProblem (Ljava/lang/String;Ljava/util/Set;I)Ljava/lang/String;
+	public static synthetic fun originProblem$default (Ldev/droidtop/shared/trust/PublishedKeys;Ljava/lang/String;Ljava/util/Set;IILjava/lang/Object;)Ljava/lang/String;
+	public final fun parse (Ljava/lang/String;)Ldev/droidtop/shared/trust/PublishedKeys$Published;
+	public final fun select (Ljava/lang/String;Ljava/util/List;Ljava/util/Set;ILkotlin/jvm/functions/Function1;)Ldev/droidtop/shared/trust/PublishedKeys$Selection;
+	public static synthetic fun select$default (Ldev/droidtop/shared/trust/PublishedKeys;Ljava/lang/String;Ljava/util/List;Ljava/util/Set;ILkotlin/jvm/functions/Function1;ILjava/lang/Object;)Ldev/droidtop/shared/trust/PublishedKeys$Selection;
+}
+
+public final class dev/droidtop/shared/trust/PublishedKeys$Published {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;)Ldev/droidtop/shared/trust/PublishedKeys$Published;
+	public static synthetic fun copy$default (Ldev/droidtop/shared/trust/PublishedKeys$Published;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Ldev/droidtop/shared/trust/PublishedKeys$Published;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getKeyBase64 ()Ljava/lang/String;
+	public final fun getOrigin ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class dev/droidtop/shared/trust/PublishedKeys$Selection {
+}
+
+public final class dev/droidtop/shared/trust/PublishedKeys$Selection$Failed : dev/droidtop/shared/trust/PublishedKeys$Selection {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Ldev/droidtop/shared/trust/PublishedKeys$Selection$Failed;
+	public static synthetic fun copy$default (Ldev/droidtop/shared/trust/PublishedKeys$Selection$Failed;Ljava/lang/String;ILjava/lang/Object;)Ldev/droidtop/shared/trust/PublishedKeys$Selection$Failed;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getReason ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/droidtop/shared/trust/PublishedKeys$Selection$Fetched : dev/droidtop/shared/trust/PublishedKeys$Selection {
+	public fun <init> (Ldev/droidtop/shared/trust/PublishedKeys$Published;)V
+	public final fun component1 ()Ldev/droidtop/shared/trust/PublishedKeys$Published;
+	public final fun copy (Ldev/droidtop/shared/trust/PublishedKeys$Published;)Ldev/droidtop/shared/trust/PublishedKeys$Selection$Fetched;
+	public static synthetic fun copy$default (Ldev/droidtop/shared/trust/PublishedKeys$Selection$Fetched;Ldev/droidtop/shared/trust/PublishedKeys$Published;ILjava/lang/Object;)Ldev/droidtop/shared/trust/PublishedKeys$Selection$Fetched;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getKey ()Ldev/droidtop/shared/trust/PublishedKeys$Published;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/droidtop/shared/trust/Sha256 {
+	public static final field INSTANCE Ldev/droidtop/shared/trust/Sha256;
+	public final fun hex (Ljava/io/File;)Ljava/lang/String;
+	public final fun hex (Ljava/io/InputStream;)Ljava/lang/String;
+	public final fun hex ([B)Ljava/lang/String;
+}
+

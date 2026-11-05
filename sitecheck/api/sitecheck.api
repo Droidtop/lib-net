@@ -1,0 +1,72 @@
+public abstract interface class dev/droidtop/shared/sitecheck/CheckOutcome {
+}
+
+public final class dev/droidtop/shared/sitecheck/CheckOutcome$Failed : dev/droidtop/shared/sitecheck/CheckOutcome {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Ldev/droidtop/shared/sitecheck/CheckOutcome$Failed;
+	public static synthetic fun copy$default (Ldev/droidtop/shared/sitecheck/CheckOutcome$Failed;Ljava/lang/String;ILjava/lang/Object;)Ldev/droidtop/shared/sitecheck/CheckOutcome$Failed;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getReason ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/droidtop/shared/sitecheck/CheckOutcome$NeedsPerson : dev/droidtop/shared/sitecheck/CheckOutcome {
+	public static final field INSTANCE Ldev/droidtop/shared/sitecheck/CheckOutcome$NeedsPerson;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/droidtop/shared/sitecheck/CheckOutcome$Passed : dev/droidtop/shared/sitecheck/CheckOutcome {
+	public fun <init> (Ldev/droidtop/shared/sitecheck/Clearance;)V
+	public final fun component1 ()Ldev/droidtop/shared/sitecheck/Clearance;
+	public final fun copy (Ldev/droidtop/shared/sitecheck/Clearance;)Ldev/droidtop/shared/sitecheck/CheckOutcome$Passed;
+	public static synthetic fun copy$default (Ldev/droidtop/shared/sitecheck/CheckOutcome$Passed;Ldev/droidtop/shared/sitecheck/Clearance;ILjava/lang/Object;)Ldev/droidtop/shared/sitecheck/CheckOutcome$Passed;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getClearance ()Ldev/droidtop/shared/sitecheck/Clearance;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/droidtop/shared/sitecheck/Clearance {
+	public static final field Companion Ldev/droidtop/shared/sitecheck/Clearance$Companion;
+	public fun <init> (Ljava/lang/String;Ljava/util/Map;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/util/Map;
+	public final fun copy (Ljava/lang/String;Ljava/util/Map;)Ldev/droidtop/shared/sitecheck/Clearance;
+	public static synthetic fun copy$default (Ldev/droidtop/shared/sitecheck/Clearance;Ljava/lang/String;Ljava/util/Map;ILjava/lang/Object;)Ldev/droidtop/shared/sitecheck/Clearance;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun forHost (Ljava/lang/String;)Ljava/lang/String;
+	public final fun getCookies ()Ljava/util/Map;
+	public final fun getUserAgent ()Ljava/lang/String;
+	public fun hashCode ()I
+	public final fun plus (Ldev/droidtop/shared/sitecheck/Clearance;)Ldev/droidtop/shared/sitecheck/Clearance;
+	public fun toString ()Ljava/lang/String;
+	public final fun without (Ljava/lang/String;)Ldev/droidtop/shared/sitecheck/Clearance;
+}
+
+public final class dev/droidtop/shared/sitecheck/Clearance$Companion {
+	public final fun from (Ljava/lang/String;Ljava/util/Map;)Ldev/droidtop/shared/sitecheck/Clearance;
+}
+
+public abstract interface class dev/droidtop/shared/sitecheck/SiteAsker {
+	public abstract fun ask (Ljava/lang/String;ZLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class dev/droidtop/shared/sitecheck/SiteCheck {
+	public static final field INSTANCE Ldev/droidtop/shared/sitecheck/SiteCheck;
+	public final fun clearanceOf (Ljava/lang/String;)Ljava/lang/String;
+	public final fun covers (Ljava/lang/String;Ljava/lang/String;)Z
+	public final fun isChallenge (ILjava/util/Map;[B)Z
+	public final fun isCheckTitle (Ljava/lang/String;)Z
+	public final fun isClearanceCookie (Ljava/lang/String;)Z
+	public final fun mergeCookies (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+	public final fun pagePassed (Ljava/lang/String;Ljava/lang/String;)Z
+}
+
+public abstract interface class dev/droidtop/shared/sitecheck/SiteSolver {
+	public abstract fun solve (Ljava/lang/String;JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+

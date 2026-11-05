@@ -1,0 +1,136 @@
+public final class dev/droidtop/shared/net/GitHubAuth {
+	public static final field Companion Ldev/droidtop/shared/net/GitHubAuth$Companion;
+	public static final field MAX_REDIRECTS I
+	public final fun authorizationFor (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+	public final fun downloadRequestFor (Ljava/lang/String;Ljava/lang/String;)Lkotlin/Pair;
+	public final fun getTokenHosts ()Ljava/util/Set;
+	public final fun isApiAssetUrl (Ljava/lang/String;)Z
+	public final fun open (Ljava/lang/String;Ljava/lang/String;IILjava/util/Map;Z)Ljava/net/HttpURLConnection;
+	public static synthetic fun open$default (Ldev/droidtop/shared/net/GitHubAuth;Ljava/lang/String;Ljava/lang/String;IILjava/util/Map;ZILjava/lang/Object;)Ljava/net/HttpURLConnection;
+}
+
+public final class dev/droidtop/shared/net/GitHubAuth$Companion {
+	public final fun getDEFAULT ()Ldev/droidtop/shared/net/GitHubAuth;
+	public final fun getTOKEN_HOSTS ()Ljava/util/Set;
+	public final fun masked (Ljava/lang/String;)Ljava/lang/String;
+}
+
+public final class dev/droidtop/shared/net/GitHubClient {
+	public static final field API_VERSION Ljava/lang/String;
+	public static final field Companion Ldev/droidtop/shared/net/GitHubClient$Companion;
+	public static final field DEFAULT_MAX_BYTES J
+	public static final field MAX_PAGES I
+	public fun <init> (Ljava/lang/String;Lkotlin/jvm/functions/Function0;Ldev/droidtop/shared/net/GitHubAuth;Ljava/lang/String;Ldev/droidtop/shared/net/GitHubClient$Timeouts;Ldev/droidtop/shared/net/GitHubClient$Timeouts;Lkotlin/jvm/functions/Function3;)V
+	public synthetic fun <init> (Ljava/lang/String;Lkotlin/jvm/functions/Function0;Ldev/droidtop/shared/net/GitHubAuth;Ljava/lang/String;Ldev/droidtop/shared/net/GitHubClient$Timeouts;Ldev/droidtop/shared/net/GitHubClient$Timeouts;Lkotlin/jvm/functions/Function3;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun download (Ljava/lang/String;Ljava/io/OutputStream;JLkotlin/jvm/functions/Function2;)J
+	public static synthetic fun download$default (Ldev/droidtop/shared/net/GitHubClient;Ljava/lang/String;Ljava/io/OutputStream;JLkotlin/jvm/functions/Function2;ILjava/lang/Object;)J
+	public final fun get (Ljava/lang/String;Ljava/lang/String;J)Ldev/droidtop/shared/net/GitHubClient$Response;
+	public static synthetic fun get$default (Ldev/droidtop/shared/net/GitHubClient;Ljava/lang/String;Ljava/lang/String;JILjava/lang/Object;)Ldev/droidtop/shared/net/GitHubClient$Response;
+	public final fun listReleases (Ljava/lang/String;Ljava/lang/String;I)Ldev/droidtop/shared/net/ReleaseListing;
+	public static synthetic fun listReleases$default (Ldev/droidtop/shared/net/GitHubClient;Ljava/lang/String;Ljava/lang/String;IILjava/lang/Object;)Ldev/droidtop/shared/net/ReleaseListing;
+}
+
+public final class dev/droidtop/shared/net/GitHubClient$Companion {
+}
+
+public final class dev/droidtop/shared/net/GitHubClient$Response {
+	public fun <init> ([BLjava/lang/String;Ljava/lang/String;)V
+	public final fun getBody ()[B
+	public final fun getEtag ()Ljava/lang/String;
+	public final fun getLink ()Ljava/lang/String;
+	public final fun text ()Ljava/lang/String;
+}
+
+public final class dev/droidtop/shared/net/GitHubClient$Timeouts {
+	public fun <init> (II)V
+	public final fun component1 ()I
+	public final fun component2 ()I
+	public final fun copy (II)Ldev/droidtop/shared/net/GitHubClient$Timeouts;
+	public static synthetic fun copy$default (Ldev/droidtop/shared/net/GitHubClient$Timeouts;IIILjava/lang/Object;)Ldev/droidtop/shared/net/GitHubClient$Timeouts;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getConnectMs ()I
+	public final fun getReadMs ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/droidtop/shared/net/GitHubClient$TooLarge : java/io/IOException {
+	public fun <init> (J)V
+	public final fun getLimit ()J
+}
+
+public final class dev/droidtop/shared/net/GitHubHttpException : java/io/IOException {
+	public fun <init> (ILjava/lang/Integer;Ljava/lang/Long;Ljava/lang/String;)V
+	public final fun getRateLimitRemaining ()Ljava/lang/Integer;
+	public final fun getRateLimitResetEpochSeconds ()Ljava/lang/Long;
+	public final fun getStatus ()I
+}
+
+public final class dev/droidtop/shared/net/GitHubReleases {
+	public static final field INSTANCE Ldev/droidtop/shared/net/GitHubReleases;
+	public final fun nextLink (Ljava/lang/String;)Ljava/lang/String;
+	public final fun parse (Ljava/lang/String;)Ljava/util/List;
+}
+
+public final class dev/droidtop/shared/net/Release {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZZLjava/lang/String;Ljava/util/List;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Z
+	public final fun component5 ()Z
+	public final fun component6 ()Ljava/lang/String;
+	public final fun component7 ()Ljava/util/List;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZZLjava/lang/String;Ljava/util/List;)Ldev/droidtop/shared/net/Release;
+	public static synthetic fun copy$default (Ldev/droidtop/shared/net/Release;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZZLjava/lang/String;Ljava/util/List;ILjava/lang/Object;)Ldev/droidtop/shared/net/Release;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAssets ()Ljava/util/List;
+	public final fun getBody ()Ljava/lang/String;
+	public final fun getDraft ()Z
+	public final fun getName ()Ljava/lang/String;
+	public final fun getPrerelease ()Z
+	public final fun getPublishedAt ()Ljava/lang/String;
+	public final fun getTag ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/droidtop/shared/net/ReleaseAsset {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JLjava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()J
+	public final fun component5 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JLjava/lang/String;)Ldev/droidtop/shared/net/ReleaseAsset;
+	public static synthetic fun copy$default (Ldev/droidtop/shared/net/ReleaseAsset;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JLjava/lang/String;ILjava/lang/Object;)Ldev/droidtop/shared/net/ReleaseAsset;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getApiUrl ()Ljava/lang/String;
+	public final fun getDigest ()Ljava/lang/String;
+	public final fun getDownloadUrl ()Ljava/lang/String;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getSize ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class dev/droidtop/shared/net/ReleaseListing {
+}
+
+public final class dev/droidtop/shared/net/ReleaseListing$Fetched : dev/droidtop/shared/net/ReleaseListing {
+	public fun <init> (Ljava/util/List;Ljava/lang/String;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (Ljava/util/List;Ljava/lang/String;)Ldev/droidtop/shared/net/ReleaseListing$Fetched;
+	public static synthetic fun copy$default (Ldev/droidtop/shared/net/ReleaseListing$Fetched;Ljava/util/List;Ljava/lang/String;ILjava/lang/Object;)Ldev/droidtop/shared/net/ReleaseListing$Fetched;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEtag ()Ljava/lang/String;
+	public final fun getReleases ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/droidtop/shared/net/ReleaseListing$Unchanged : dev/droidtop/shared/net/ReleaseListing {
+	public static final field INSTANCE Ldev/droidtop/shared/net/ReleaseListing$Unchanged;
+}
+

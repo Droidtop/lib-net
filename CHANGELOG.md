@@ -1,7 +1,7 @@
 # Changelog
 
 All notable changes to lib-net (droidtop-shared until 0.2.0). Versions follow [Semantic Versioning](https://semver.org/)
-(0.x releases may change anything).
+(in 0.x, only a new minor version may break the API; CI enforces it).
 
 ## [0.2.0]
 
@@ -9,6 +9,9 @@ All notable changes to lib-net (droidtop-shared until 0.2.0). Versions follow [S
 - The library moved from Droidtop/droidtop-shared to Droidtop/lib-net, with its history, as one of the shared
   library families of Droidtop/tracker#867. Its modules and their package (`dev.droidtop.shared.*`) are
   unchanged; the version property is `lib.version`.
+- Each module's public API is checked in (`<module>/api/<module>.api`) and CI holds the code to it: `apiCheck` fails
+  on any difference, and `scripts/check-api-compat.sh` fails when an API line is removed since the last release
+  without a breaking version (Droidtop/tracker#867).
 
 Also in 0.2.0, from droidtop-shared after its 0.1.0:
 
