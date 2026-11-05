@@ -172,7 +172,11 @@ jobs:
           curl -fsSL "$base/checksums.txt" | grep " $tarball\$" | sha256sum -c -
           mkdir -p vgw s3root
           tar -xzf "$tarball" -C vgw
-          ROOT_ACCESS_KEY=test-access ROOT_SECRET_KEY=test-only-secret             ./vgw/versitygw --port 127.0.0.1:7070 posix "$RUNNER_TEMP/s3root" > vgw.log 2>&1 &
+          # The binary's folder inside the tarball differs between releases.
+          vgw_bin="$(find vgw -type f -name versitygw | head -n 1)"
+          [ -n "$vgw_bin" ] || { echo "no versitygw in $tarball:"; find vgw; exit 1; }
+          chmod +x "$vgw_bin"
+          ROOT_ACCESS_KEY=test-access ROOT_SECRET_KEY=test-only-secret "$vgw_bin" --port 127.0.0.1:7070 posix "$RUNNER_TEMP/s3root" > vgw.log 2>&1 &
           for _ in $(seq 1 30); do
             if curl -s -o /dev/null http://127.0.0.1:7070/; then break; fi
             sleep 1
