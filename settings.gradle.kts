@@ -1,4 +1,4 @@
-rootProject.name = "droidtop-shared"
+rootProject.name = "lib-net"
 
 pluginManagement {
     repositories {

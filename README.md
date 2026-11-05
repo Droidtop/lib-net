@@ -1,11 +1,14 @@
-# droidtop-shared
+# lib-net
 
-Small Kotlin libraries that droidtop and Enginehost each used to carry their own copy of
-(Droidtop/tracker#184, #188, #191). Each app **vendors** this repository and neither depends on
-the other; this repository depends on neither.
+Networking, trust and reporting for droidtop and Enginehost, and later Pythia and the agent: one of the shared
+library families of Droidtop/tracker#867. The libraries belong to no program; each program has its own scaffold
+and pins a tagged release of each library it uses (#867 D2).
 
-Every module is plain JVM: the Kotlin standard library and `java.security` only, no Android
-API. Its tests run on a build machine with no device and no SDK.
+This is Droidtop/droidtop-shared, moved here with its history (#867 step 1: "reuse and contract first, rewrites
+second"). Its modules are unchanged and keep their package, `dev.droidtop.shared.*`, so nothing that uses them is
+edited. `:version` and `:launch-contract` are not networking; they stay here until the Kotlin side of lib-games
+and lib-engines exists. Every module is plain JVM: the Kotlin standard library and `java.security` only, no
+Android API, so its tests run on a build machine with no device and no SDK.
 
 | Module | Owns |
 |---|---|
@@ -18,11 +21,14 @@ API. Its tests run on a build machine with no device and no SDK.
 
 Licence: GPL-3.0 (see `LICENSE`).
 
-## Build
+## Build and test
 
-CI is `./gradlew test` on JDK 17 (`.github/workflows/build.yml`). Work lands on `main` from `ci/*`
-branches once CI is green.
+CI (`.github/workflows/ci.yml`) runs `./gradlew test` on JDK 17, then builds and tests each program that uses
+this library against the commit, through that program's own `library-check.yml` (#867 D2): droidtop and
+Enginehost. Work lands on `main` from `ci/*` branches once CI is green.
 
 ## Versions
 
-The library's version is `shared.version` in `gradle.properties`. Each app pins a tag.
+The library's version is `lib.version` in `gradle.properties`. A release is a tag `vX.Y.Z`: CI creates it on a
+green `main` whose version is not yet tagged, so to release, raise the version (and the CHANGELOG) in the change
+that needs it. Each program pins a tag.

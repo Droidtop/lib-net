@@ -6,5 +6,5 @@ plugins {
 // on a build machine with no device and no Android SDK.
 subprojects {
     group = "dev.droidtop.shared"
-    version = rootProject.property("shared.version") as String
+    version = rootProject.property("lib.version") as String
 }

@@ -1,9 +1,16 @@
 # Changelog
 
-All notable changes to droidtop-shared. Versions follow [Semantic Versioning](https://semver.org/)
+All notable changes to lib-net (droidtop-shared until 0.2.0). Versions follow [Semantic Versioning](https://semver.org/)
 (0.x releases may change anything).
 
-## [Unreleased]
+## [0.2.0]
+
+### Changed
+- The library moved from Droidtop/droidtop-shared to Droidtop/lib-net, with its history, as one of the shared
+  library families of Droidtop/tracker#867. Its modules and their package (`dev.droidtop.shared.*`) are
+  unchanged; the version property is `lib.version`.
+
+Also in 0.2.0, from droidtop-shared after its 0.1.0:
 
 ### Added
 - `:sitecheck`: how to tell a browser check (a Cloudflare challenge, DDoS-Guard) from the page (`SiteCheck.isChallenge`),
