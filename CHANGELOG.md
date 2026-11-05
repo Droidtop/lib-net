@@ -3,6 +3,15 @@
 All notable changes to lib-net (droidtop-shared until 0.2.0). Versions follow [Semantic Versioning](https://semver.org/)
 (in 0.x, only a new minor version may break the API; CI enforces it).
 
+## [0.2.5]
+
+### Added
+- `net-tailscale` (Droidtop/tracker#645): the local node's LocalAPI, `GET /localapi/v0/status` over tailscaled's
+  socket (`/var/run/tailscale/tailscaled.sock`, `/run/tailscale/tailscaled.sock`, or `TAILSCALE_SOCKET`) or, on
+  Windows, its named pipe, the way ktailctl and the `tailscale` CLI read it. `status()` gives `Tailnet::Absent` when
+  no tailscaled runs, else the backend state, this device and its peers with their addresses. Programs use it to
+  reach peers over a tailnet when there is one and never require it. rust-version 1.85, for Pythia's Debian build.
+
 ## [0.2.4]
 
 ### Changed
