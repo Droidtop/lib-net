@@ -5,9 +5,7 @@ name: CI
 # how it builds in its own library-check.yml; this only names the submodule and the commit. Work lands on
 # main from ci/* branches once this is green.
 #
-# droidtop and Enginehost still take this library as vendor/droidtop-shared, the repository it moved from,
-# so the commit is fetched from this repository into that submodule. When a program moves its submodule
-# to vendor/lib-net, its job here changes with it.
+# droidtop and Enginehost take this library as vendor/lib-net.
 on:
   push:
     branches: [main, "ci/**"]
@@ -172,15 +170,13 @@ jobs:
   droidtop:
     uses: Droidtop/droidtop/.github/workflows/library-check.yml@main
     with:
-      submodule: vendor/droidtop-shared
-      repository: Droidtop/lib-net
+      submodule: vendor/lib-net
       ref: ${{ github.sha }}
 
   enginehost:
     uses: Droidtop/enginehost/.github/workflows/library-check.yml@main
     with:
-      submodule: vendor/droidtop-shared
-      repository: Droidtop/lib-net
+      submodule: vendor/lib-net
       ref: ${{ github.sha }}
 
   # A green main whose version has no tag yet is released: CI tags v<version> on this commit, and that tag is
