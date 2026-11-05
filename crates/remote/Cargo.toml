@@ -18,3 +18,5 @@ base64.workspace = true
 russh.workspace = true
 russh-sftp.workspace = true
 tokio.workspace = true
+rusty-s3.workspace = true
+url.workspace = true

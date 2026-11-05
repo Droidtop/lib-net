@@ -23,7 +23,7 @@ Android API, so its tests run on a build machine with no device and no SDK.
 
 | Crate | Owns |
 |---|---|
-| [`net-remote`](crates/remote) | The person's own shares and cloud storage behind one interface, `Remote`: list, stat, read, ranged read, a write that lands in one step, rename, remove one file, make folders. Backends so far: a local folder, WebDAV (Nextcloud, ownCloud, most NAS) and SFTP (any SSH server, its key pinned). A share is a network resource for many uses; lib-sync uses it as one sync backend (Droidtop/tracker#573) |
+| [`net-remote`](crates/remote) | The person's own shares and cloud storage behind one interface, `Remote`: list, stat, read, ranged read, a write that lands in one step, rename, remove one file, make folders. Backends so far: a local folder, WebDAV (Nextcloud, ownCloud, most NAS) SFTP (any SSH server, its key pinned) and S3-compatible storage. A share is a network resource for many uses; lib-sync uses it as one sync backend (Droidtop/tracker#573) |
 
 Licence: GPL-3.0 (see `LICENSE`).
 

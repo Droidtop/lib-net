@@ -3,6 +3,16 @@
 All notable changes to lib-net (droidtop-shared until 0.2.0). Versions follow [Semantic Versioning](https://semver.org/)
 (in 0.x, only a new minor version may break the API; CI enforces it).
 
+## [0.2.3]
+
+### Added
+- `net-remote`: S3-compatible storage (`S3`, `S3Config`; Droidtop/tracker#573): AWS S3, Backblaze B2, Wasabi,
+  Cloudflare R2, MinIO, Garage. The person's own access key and secret; each request signed with rusty-s3 (SigV4,
+  valid five minutes) and sent with the same ureq client as WebDAV, https only unless the person allows plain http.
+  A folder is a key prefix with an empty marker object per level; a write is one PUT; a rename is a copy through
+  this device and a delete (rusty-s3 signs no server-side copy). CI tests it against versitygw, a real S3 server
+  that checks signatures.
+
 ## [0.2.2]
 
 ### Added

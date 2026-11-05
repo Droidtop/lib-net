@@ -6,7 +6,7 @@ resolver = "2"
 members = ["crates/remote"]
 
 [workspace.package]
-version = "0.2.2"
+version = "0.2.3"
 edition = "2021"
 license = "GPL-3.0-only"
 repository = "https://github.com/Droidtop/lib-net"
@@ -29,6 +29,10 @@ base64 = "0.22"
 russh = { version = "0.65", default-features = false, features = ["ring", "rsa"] }
 russh-sftp = "3"
 tokio = { version = "1", default-features = false, features = ["rt", "net", "time", "io-util", "sync"] }
+# S3-compatible storage (crates/remote/src/s3.rs): rusty-s3 only signs requests (sans-IO); they are sent with the
+# same ureq client WebDAV uses.
+rusty-s3 = "0.11"
+url = "2"
 
 [profile.release]
 opt-level = "s"

@@ -7,7 +7,8 @@
 //! backend is one implementation of it:
 //! - [`LocalFolder`]: a folder on this computer (one the person's own sync tool carries, or a mount);
 //! - [`WebDav`]: Nextcloud, ownCloud, most NAS and any WebDAV server;
-//! - [`Sftp`]: any SSH server, with its key pinned.
+//! - [`Sftp`]: any SSH server, with its key pinned;
+//! - [`S3`]: S3-compatible storage (AWS, Backblaze B2, Wasabi, Cloudflare R2, MinIO, Garage).
 //!
 //! Paths are relative to the share's root, `/`-separated, and checked by [`RemotePath`]: no `..`, no
 //! `.`, no empty segment and no backslash, so nothing a caller builds can climb out of the share.
@@ -20,10 +21,12 @@ use std::fmt;
 use std::io::{self, Read, Write};
 
 mod local;
+mod s3;
 mod sftp;
 mod webdav;
 
 pub use local::LocalFolder;
+pub use s3::{S3Config, S3};
 pub use sftp::{Sftp, SftpConfig};
 pub use webdav::{WebDav, WebDavConfig};
 
