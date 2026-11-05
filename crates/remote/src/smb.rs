@@ -208,11 +208,22 @@ fn failure(ctx: *mut Smb2Context, ret: c_int, path: &str) -> Error {
         STATUS_BAD_NETWORK_NAME => Error::Refused("the server has no share by that name".into()),
         STATUS_OBJECT_NAME_NOT_FOUND | STATUS_OBJECT_PATH_NOT_FOUND | STATUS_NO_SUCH_FILE => Error::NotFound(path.to_string()),
         _ if errno == libc_enoent() => Error::NotFound(path.to_string()),
-        _ if [libc_etimedout(), libc_econnrefused(), libc_ehostunreach(), libc_enetunreach()].contains(&errno) => {
-            Error::Unreachable(if message.is_empty() { format!("errno {errno}") } else { message })
+        _ if [libc_etimedout(), libc_econnrefused(), libc_ehostunreach(), libc_enetunreach()].contains(&errno)
+            || unreachable_words(&message) =>
+        {
+            Error::Unreachable(if message.is_empty() { format!("errno {errno}") } else { message.trim().to_string() })
         }
         _ => Error::Refused(if message.is_empty() { format!("it answered {errno}") } else { message }),
     }
+}
+
+/// Whether libsmb2's words say the server wasn't reached. It reports a failed connect in its message ("Socket connect
+/// failed with 111"), not in the value it returns.
+fn unreachable_words(message: &str) -> bool {
+    let m = message.to_ascii_lowercase();
+    ["socket connect failed", "connect failed", "timed out", "timeout", "getaddrinfo", "no route to host", "network is unreachable"]
+        .iter()
+        .any(|w| m.contains(w))
 }
 
 // The errno values libsmb2 returns negated: Linux and Android share them; macOS differs for the network ones.
@@ -558,6 +569,16 @@ mod tests {
         for (server, share) in [("", "s"), ("me@nas.local", "s"), ("nas.local/s", "s"), ("nas.local", ""), ("nas.local", "a/b")] {
             assert!(matches!(Smb::connect(SmbConfig::new(server, share, "u", "p")), Err(Error::BadPath(_))), "{server:?} {share:?}");
         }
+    }
+
+    #[test]
+    fn libsmb2s_connect_failures_read_as_unreachable() {
+        assert!(unreachable_words(
+            "smb2_service failed with : Socket connect failed with 111
+"
+        ));
+        assert!(unreachable_words("Timeout expired and no connection exists"));
+        assert!(!unreachable_words("Session setup failed with (0xc000006d) STATUS_LOGON_FAILURE"));
     }
 
     #[test]

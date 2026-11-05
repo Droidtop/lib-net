@@ -203,9 +203,11 @@ jobs:
           sudo apt-get update -q
           sudo apt-get install -y -q samba
           base="$RUNNER_TEMP/smb"
-          mkdir -p "$base/run" "$base/lock" "$base/state" "$base/cache" "$base/private" "$base/share"
+          mkdir -p "$base/run" "$base/lock" "$base/state" "$base/cache" "$base/private"
           sudo useradd -M -s /usr/sbin/nologin smbtest
-          sudo chown smbtest "$base/share"
+          # The share lives outside the runner's home, which the test user can't enter (run 42087142351:
+          # "vfs_ChDir(/home/runner/work/_temp/smb/share) failed: Permission denied").
+          sudo install -d -o smbtest -m 700 /srv/net-remote-smb
           cat > "$base/smb.conf" <<EOF
           [global]
             smb ports = 4450
@@ -221,7 +223,7 @@ jobs:
             private dir = $base/private
             log file = $base/log.%m
           [droidtop]
-            path = $base/share
+            path = /srv/net-remote-smb
             read only = no
             valid users = smbtest
           EOF
