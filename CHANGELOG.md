@@ -3,6 +3,13 @@
 All notable changes to lib-net (droidtop-shared until 0.2.0). Versions follow [Semantic Versioning](https://semver.org/)
 (in 0.x, only a new minor version may break the API; CI enforces it).
 
+## [0.2.4]
+
+### Changed
+- `net-remote`: SFTP is the default feature `sftp`. A program that turns default features off gets WebDAV and S3
+  without russh (droidtop, while droidtop-agent's windowcast pins sspi 0.21: its `ed25519-dalek =3.0.0-rc.1` can't
+  live in one graph with russh 0.65's `ed25519-dalek ^3`). Default builds are unchanged.
+
 ## [0.2.3]
 
 ### Added

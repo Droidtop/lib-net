@@ -81,6 +81,12 @@ jobs:
       - name: Clippy
         if: success() || failure()
         run: cargo clippy --workspace --all-targets --keep-going -- -D warnings
+      # net-remote without SFTP, as a program that turns default features off builds it.
+      - name: Clippy and test without default features
+        if: success() || failure()
+        run: |
+          cargo clippy -p net-remote --no-default-features --all-targets -- -D warnings
+          cargo test -p net-remote --no-default-features --lib
       - name: Start a WebDAV server for net-remote's tests
         run: |
           set -eu

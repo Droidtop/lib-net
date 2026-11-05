@@ -2,6 +2,8 @@
 //! `NET_REMOTE_SFTP_HOST`, `_PORT`, `_USER`, `_PASSWORD`, `_HOST_KEY` (its SHA-256 fingerprint) and `_FOLDER`.
 //! Without them the test says so and passes; CI fails if the server is not named (`NET_REMOTE_SFTP_REQUIRED`).
 
+#![cfg(feature = "sftp")]
+
 use std::env;
 use std::time::Duration;
 

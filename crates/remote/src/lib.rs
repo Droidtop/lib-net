@@ -22,11 +22,13 @@ use std::io::{self, Read, Write};
 
 mod local;
 mod s3;
+#[cfg(feature = "sftp")]
 mod sftp;
 mod webdav;
 
 pub use local::LocalFolder;
 pub use s3::{S3Config, S3};
+#[cfg(feature = "sftp")]
 pub use sftp::{Sftp, SftpConfig};
 pub use webdav::{WebDav, WebDavConfig};
 
