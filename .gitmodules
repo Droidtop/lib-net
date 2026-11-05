@@ -1,0 +1,4 @@
+[submodule "vendor/libsmb2"]
+	path = vendor/libsmb2
+	url = https://github.com/sahlberg/libsmb2
+	shallow = true
