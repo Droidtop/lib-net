@@ -1,0 +1,31 @@
+# lib-net's Rust crates (Droidtop/tracker#867 D3: library logic in Rust, platform-neutral). The Kotlin modules
+# beside them build with Gradle; both share the repository's one version, lib.version in gradle.properties,
+# which CI checks this version against.
+[workspace]
+resolver = "2"
+members = ["crates/remote"]
+
+[workspace.package]
+version = "0.2.1"
+edition = "2021"
+license = "GPL-3.0-only"
+repository = "https://github.com/Droidtop/lib-net"
+rust-version = "1.89"
+
+[workspace.dependencies]
+thiserror = "1"
+rand_core = { version = "0.6", features = ["getrandom"] }
+# HTTP for WebDAV (crates/remote/src/webdav.rs): ureq 2 with rustls on ring, the TLS stack lib-sync's channel uses,
+# which builds for every Android target with no extra toolchain.
+ureq = "2"
+roxmltree = "0.20"
+percent-encoding = "2"
+httpdate = "1"
+# 0.22, not 0.23: ureq 2 already brings base64 0.22, so one copy is linked.
+base64 = "0.22"
+
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+strip = true

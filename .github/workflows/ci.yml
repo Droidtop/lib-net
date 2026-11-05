@@ -54,6 +54,121 @@ jobs:
           persist-credentials: false
       - run: scripts/check-api-compat.sh
 
+  # The Rust crates (Cargo.toml; Droidtop/tracker#573's share client, net-remote): format, lints and tests, then a
+  # build for both Android ABIs the programs ship. net-remote's WebDAV backend is tested against a real WebDAV
+  # server (wsgidav) started here; crates/remote/tests/webdav_live.rs. The user and password are this test server's
+  # own, made up here.
+  rust:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: One version for the Gradle modules and the Rust crates
+        run: |
+          set -eu
+          gradle="$(sed -n 's/^lib\.version=//p' gradle.properties)"
+          cargo="$(sed -n 's/^version = "\(.*\)"$/\1/p' Cargo.toml | head -1)"
+          echo "lib.version $gradle, Cargo.toml $cargo"
+          [ -n "$gradle" ] && [ "$gradle" = "$cargo" ]
+      - uses: dtolnay/rust-toolchain@6bed0761d98439e5a578e2877258200ad565ba87 # stable
+        with:
+          components: clippy, rustfmt
+          targets: aarch64-linux-android, x86_64-linux-android
+      - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2
+      - name: Format check
+        run: cargo fmt --all -- --check
+      - name: Clippy
+        if: success() || failure()
+        run: cargo clippy --workspace --all-targets --keep-going -- -D warnings
+      - name: Start a WebDAV server for net-remote's tests
+        run: |
+          set -eu
+          python3 -m venv "$RUNNER_TEMP/dav-venv"
+          "$RUNNER_TEMP/dav-venv/bin/pip" install -q wsgidav==4.3.3 cheroot==10.0.1
+          mkdir -p "$RUNNER_TEMP/dav-root"
+          cat > "$RUNNER_TEMP/dav.yaml" <<EOF
+          host: 127.0.0.1
+          port: 8089
+          provider_mapping:
+            "/dav": "$RUNNER_TEMP/dav-root"
+          http_authenticator:
+            accept_basic: true
+            accept_digest: false
+            default_to_digest: false
+          simple_dc:
+            user_mapping:
+              "*":
+                "tester":
+                  password: "test-only-password"
+          verbose: 1
+          EOF
+          "$RUNNER_TEMP/dav-venv/bin/wsgidav" --config "$RUNNER_TEMP/dav.yaml" > "$RUNNER_TEMP/dav.log" 2>&1 &
+          for _ in $(seq 1 30); do
+            if curl -fsS -o /dev/null -u tester:test-only-password http://127.0.0.1:8089/dav/; then break; fi
+            sleep 1
+          done
+          curl -fsS -o /dev/null -u tester:test-only-password http://127.0.0.1:8089/dav/
+          {
+            echo "NET_REMOTE_WEBDAV_URL=http://127.0.0.1:8089/dav/"
+            echo "NET_REMOTE_WEBDAV_USER=tester"
+            echo "NET_REMOTE_WEBDAV_PASSWORD=test-only-password"
+            echo "NET_REMOTE_WEBDAV_REQUIRED=1"
+          } >> "$GITHUB_ENV"
+      - name: Test
+        if: success() || failure()
+        run: cargo test --workspace --no-fail-fast
+      - name: The WebDAV server's log, when a test failed
+        if: failure()
+        run: cat "$RUNNER_TEMP/dav.log" || true
+      - name: Build for arm64-v8a and x86_64 (Android)
+        shell: bash
+        run: |
+          set -eu
+          ndk="${ANDROID_NDK_LATEST_HOME:-$ANDROID_NDK_HOME}"
+          bin="$ndk/toolchains/llvm/prebuilt/linux-x86_64/bin"
+          export CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER="$bin/aarch64-linux-android26-clang"
+          export CARGO_TARGET_X86_64_LINUX_ANDROID_LINKER="$bin/x86_64-linux-android26-clang"
+          export CC_aarch64_linux_android="$bin/aarch64-linux-android26-clang"
+          export CC_x86_64_linux_android="$bin/x86_64-linux-android26-clang"
+          export AR_aarch64_linux_android="$bin/llvm-ar"
+          export AR_x86_64_linux_android="$bin/llvm-ar"
+          for target in aarch64-linux-android x86_64-linux-android; do
+            cargo build --release --workspace --target "$target"
+          done
+
+  # The Rust crates' public interface stays compatible within a version, as the Kotlin modules' does (api-compat).
+  # cargo-semver-checks compares each crate with the last release; a crate that release did not have yet has
+  # nothing to compare with and is skipped.
+  rust-semver:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: dtolnay/rust-toolchain@6bed0761d98439e5a578e2877258200ad565ba87 # stable
+      - uses: taiki-e/install-action@0e09747a63ae497bf945b3dcaf38fef0050d0109 # v2.62.0
+        with:
+          tool: cargo-semver-checks@0.51.0
+      - name: No breaking change without a version that says so
+        run: |
+          set -eu
+          last="$(git describe --tags --abbrev=0 --match 'v[0-9]*' HEAD 2>/dev/null || true)"
+          if [ -z "$last" ]; then echo "nothing released yet; nothing to compare"; exit 0; fi
+          checked=0
+          for manifest in crates/*/Cargo.toml; do
+            name="$(sed -n 's/^name = "\(.*\)"$/\1/p' "$manifest" | head -1)"
+            if ! git cat-file -e "$last:$manifest" 2>/dev/null; then
+              echo "$name is new since $last; nothing to compare"
+              continue
+            fi
+            echo "comparing $name with $last"
+            cargo semver-checks check-release -p "$name" --baseline-rev "$last"
+            checked=$((checked + 1))
+          done
+          echo "$checked crates compared"
+
   droidtop:
     uses: Droidtop/droidtop/.github/workflows/library-check.yml@main
     with:
@@ -73,7 +188,7 @@ jobs:
   # the change that needs it.
   release:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: [test, api-compat, droidtop, enginehost]
+    needs: [test, api-compat, rust, rust-semver, droidtop, enginehost]
     runs-on: ubuntu-24.04
     permissions:
       contents: write

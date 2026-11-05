@@ -1,0 +1,17 @@
+[package]
+name = "net-remote"
+description = "One client for the person's own shares and cloud storage: a folder on this computer, WebDAV, and more backends to come"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+thiserror.workspace = true
+rand_core.workspace = true
+ureq.workspace = true
+roxmltree.workspace = true
+percent-encoding.workspace = true
+httpdate.workspace = true
+base64.workspace = true

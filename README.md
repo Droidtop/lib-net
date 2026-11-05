@@ -19,11 +19,18 @@ Android API, so its tests run on a build machine with no device and no SDK.
 | [`:trust`](trust/README.md) | Checking signatures: the certificate-chain JWS both apps use, and SHA-256 helpers. Pins no key |
 | `:testpki` | Test-only: throwaway certificate chains and signatures for the tests |
 
+**Rust crates** (Cargo workspace at the root; Droidtop/tracker#867 D3):
+
+| Crate | Owns |
+|---|---|
+| [`net-remote`](crates/remote) | The person's own shares and cloud storage behind one interface, `Remote`: list, stat, read, ranged read, a write that lands in one step, rename, remove one file, make folders. Backends so far: a local folder and WebDAV (Nextcloud, ownCloud, most NAS). A share is a network resource for many uses; lib-sync uses it as one sync backend (Droidtop/tracker#573) |
+
 Licence: GPL-3.0 (see `LICENSE`).
 
 ## Build and test
 
-CI (`.github/workflows/ci.yml`) runs `./gradlew test` on JDK 17, then builds and tests each program that uses
+CI (`.github/workflows/ci.yml`) runs `./gradlew test` on JDK 17 and, for the Rust crates, `cargo fmt`, `clippy`
+and `cargo test` (WebDAV against a real WebDAV server it starts) plus a build for both Android ABIs, then builds and tests each program that uses
 this library against the commit, through that program's own `library-check.yml` (#867 D2): droidtop and
 Enginehost. Work lands on `main` from `ci/*` branches once CI is green.
 
@@ -37,6 +44,8 @@ validator): `./gradlew apiCheck` fails when the API is not its dump, and `./grad
 a new minor (in 0.x) and the CHANGELOG says what broke and what a program changes. Adding to the API only needs the
 new dump.
 
-The library's version is `lib.version` in `gradle.properties`. A release is a tag `vX.Y.Z`: CI creates it on a
+The library's version is `lib.version` in `gradle.properties`; the Rust workspace's version in `Cargo.toml` is the
+same number, and CI fails when they differ. For the Rust crates, `cargo-semver-checks` holds the interface to the
+last release, as the API dumps do for the Kotlin modules. A release is a tag `vX.Y.Z`: CI creates it on a
 green `main` whose version is not yet tagged, so to release, raise the version (and the CHANGELOG) in the change
 that needs it. Each program pins a tag.

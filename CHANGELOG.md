@@ -3,6 +3,20 @@
 All notable changes to lib-net (droidtop-shared until 0.2.0). Versions follow [Semantic Versioning](https://semver.org/)
 (in 0.x, only a new minor version may break the API; CI enforces it).
 
+## [0.2.1]
+
+### Added
+- `net-remote`, the first Rust crate here (Droidtop/tracker#573; owner, 2026-11-05: "Share client? That's be in
+  lib-net. lib-sync controls synchronization. A share can be a backend for a sync, but it's really just a network
+  resource we can use for lots of stuff"). The `Remote` interface (list, stat, read, ranged read, a write that lands
+  in one step through a temporary `.<name>.<tag>.part`, rename, remove one file and never a folder, make folders),
+  checked share paths (`RemotePath`: no `..`, `.`, empty segment or backslash), and two backends: `LocalFolder` and
+  `WebDav` (PROPFIND, GET with Range, PUT, MOVE, DELETE, MKCOL; Basic sign-in over https only unless the person
+  allows plain http for that share; an address with a user or password in it refused; no redirects followed; a
+  timeout on every request; uploads over 8 MiB streamed).
+- A Cargo workspace at the root, on the same version as `lib.version`, with CI for it: fmt, clippy, tests (WebDAV
+  against wsgidav), a build for arm64-v8a and x86_64 Android, and `cargo-semver-checks` against the last release.
+
 ## [0.2.0]
 
 ### Changed
