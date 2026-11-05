@@ -24,12 +24,16 @@ mod local;
 mod s3;
 #[cfg(feature = "sftp")]
 mod sftp;
+#[cfg(all(feature = "smb", unix))]
+mod smb;
 mod webdav;
 
 pub use local::LocalFolder;
 pub use s3::{S3Config, S3};
 #[cfg(feature = "sftp")]
 pub use sftp::{Sftp, SftpConfig};
+#[cfg(all(feature = "smb", unix))]
+pub use smb::{Smb, SmbConfig};
 pub use webdav::{WebDav, WebDavConfig};
 
 /// What went wrong, in words a person can read: droidtop shows these as the share's state.

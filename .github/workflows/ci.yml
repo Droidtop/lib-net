@@ -63,6 +63,7 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           persist-credentials: false
+          submodules: true
       - name: One version for the Gradle modules and the Rust crates
         run: |
           set -eu
@@ -194,12 +195,59 @@ jobs:
             echo "NET_REMOTE_S3_SECRET_KEY=test-only-secret"
             echo "NET_REMOTE_S3_REQUIRED=1"
           } >> "$GITHUB_ENV"
+      # net-remote's SMB backend (libsmb2) against a real Samba server on 127.0.0.1:4450, with a user and password made
+      # up here; crates/remote/tests/smb_live.rs.
+      - name: Start an SMB server for net-remote's tests
+        run: |
+          set -eu
+          sudo apt-get update -q
+          sudo apt-get install -y -q samba
+          base="$RUNNER_TEMP/smb"
+          mkdir -p "$base/run" "$base/lock" "$base/state" "$base/cache" "$base/private" "$base/share"
+          sudo useradd -M -s /usr/sbin/nologin smbtest
+          sudo chown smbtest "$base/share"
+          cat > "$base/smb.conf" <<EOF
+          [global]
+            smb ports = 4450
+            interfaces = lo
+            bind interfaces only = yes
+            server min protocol = SMB2_02
+            map to guest = never
+            disable netbios = yes
+            pid directory = $base/run
+            lock directory = $base/lock
+            state directory = $base/state
+            cache directory = $base/cache
+            private dir = $base/private
+            log file = $base/log.%m
+          [droidtop]
+            path = $base/share
+            read only = no
+            valid users = smbtest
+          EOF
+          printf 'test-only-password\ntest-only-password\n' | sudo smbpasswd -c "$base/smb.conf" -s -a smbtest
+          sudo smbd -D -s "$base/smb.conf"
+          for _ in $(seq 1 30); do
+            if (exec 3<>/dev/tcp/127.0.0.1/4450) 2>/dev/null; then break; fi
+            sleep 1
+          done
+          (exec 3<>/dev/tcp/127.0.0.1/4450)
+          {
+            echo "NET_REMOTE_SMB_SERVER=127.0.0.1:4450"
+            echo "NET_REMOTE_SMB_SHARE=droidtop"
+            echo "NET_REMOTE_SMB_USER=smbtest"
+            echo "NET_REMOTE_SMB_PASSWORD=test-only-password"
+            echo "NET_REMOTE_SMB_REQUIRED=1"
+          } >> "$GITHUB_ENV"
       - name: Test
         if: success() || failure()
         run: cargo test --workspace --no-fail-fast
       - name: The S3 server's log, when a test failed
         if: failure()
         run: cat "$RUNNER_TEMP/vgw.log" || true
+      - name: The SMB server's log, when a test failed
+        if: failure()
+        run: sudo sh -c 'cat "$0"/smb/log.* 2>/dev/null' "$RUNNER_TEMP" || true
       - name: The SFTP server's log, when a test failed
         if: failure()
         run: sudo cat "$RUNNER_TEMP/sshd.log" || true
@@ -232,6 +280,7 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
+          submodules: true
       - uses: dtolnay/rust-toolchain@6bed0761d98439e5a578e2877258200ad565ba87 # stable
       - uses: taiki-e/install-action@0e09747a63ae497bf945b3dcaf38fef0050d0109 # v2.62.0
         with:

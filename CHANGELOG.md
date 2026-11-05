@@ -3,6 +3,20 @@
 All notable changes to lib-net (droidtop-shared until 0.2.0). Versions follow [Semantic Versioning](https://semver.org/)
 (in 0.x, only a new minor version may break the API; CI enforces it).
 
+## [0.2.6]
+
+### Added
+- `net-remote`: SMB 2 and 3 (`Smb`, `SmbConfig`; Droidtop/tracker#573), on by default as the feature `smb`, through
+  libsmb2 (sahlberg/libsmb2 at `libsmb2-6.3`, LGPL-2.1-or-later; `vendor/libsmb2`, see `NOTICES.md`). It's built by
+  `crates/remote/build.rs` for unix targets (Linux, Android, macOS); on Windows a `\\server\share` path is already a
+  folder `LocalFolder` reads.
+  - Sign-in is NTLMSSP with the person's own user name, password and domain. Signing is always asked for; SMB 3
+    encryption is required when the person sets `require_encryption`.
+  - Writes go to a temporary name and are renamed; SMB's rename doesn't replace a file, so the target is removed
+    first. A folder is never removed.
+  - CI tests it against a real Samba server.
+- `NOTICES.md`: the third-party code lib-net vendors.
+
 ## [0.2.5]
 
 ### Added
