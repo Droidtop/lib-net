@@ -6,7 +6,7 @@ resolver = "2"
 members = ["crates/remote", "crates/tailscale"]
 
 [workspace.package]
-version = "0.2.5"
+version = "0.2.6"
 edition = "2021"
 license = "GPL-3.0-only"
 repository = "https://github.com/Droidtop/lib-net"
@@ -32,6 +32,8 @@ tokio = { version = "1", default-features = false, features = ["rt", "net", "tim
 # S3-compatible storage (crates/remote/src/s3.rs): rusty-s3 only signs requests (sans-IO); they are sent with the
 # same ureq client WebDAV uses.
 rusty-s3 = "0.11"
+# Builds libsmb2's C sources for net-remote's smb feature (crates/remote/build.rs); already in the tree through ring.
+cc = "1"
 url = "2"
 # The local Tailscale node's LocalAPI (crates/tailscale): its JSON.
 serde_json = "1"

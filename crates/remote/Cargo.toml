@@ -11,8 +11,11 @@ rust-version.workspace = true
 # SFTP (src/sftp.rs), on by default. A program whose dependency graph can't take russh 0.65's ed25519-dalek 3 yet
 # turns default features off and keeps WebDAV and S3 (droidtop, while droidtop-agent's windowcast pins sspi 0.21,
 # which needs ed25519-dalek =3.0.0-rc.1).
-default = ["sftp"]
+default = ["sftp", "smb"]
 sftp = ["dep:russh", "dep:russh-sftp", "dep:tokio"]
+# SMB 2/3 (src/smb.rs) through libsmb2, vendored at vendor/libsmb2 and built by build.rs for unix targets. On Windows a
+# \\server\share path is already a folder LocalFolder reads, so nothing is built there.
+smb = ["dep:cc"]
 
 [dependencies]
 thiserror.workspace = true
@@ -27,3 +30,6 @@ russh-sftp = { workspace = true, optional = true }
 tokio = { workspace = true, optional = true }
 rusty-s3.workspace = true
 url.workspace = true
+
+[build-dependencies]
+cc = { workspace = true, optional = true }
